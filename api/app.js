@@ -1,6 +1,10 @@
 if (process.env.NODE_ENV != "production")
   require('dotenv').config()
 
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const cors = require('cors');
+const swaggerDocs = require('./swagger/swaggerConfig');
 
 var createError = require('http-errors');
 var express = require('express');
@@ -22,9 +26,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 app.use('/api', require('./routes/index'));
 //app.use('/users', require('./routes/users'));
+
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
