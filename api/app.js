@@ -6,6 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 const cors = require('cors');
 const swaggerDocs = require('./swagger/swaggerConfig');
 
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -27,9 +28,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-app.use('/api', require('./routes/index'));
-//app.use('/users', require('./routes/users'));
 
+
+//app.use('/api', require('./routes/index'));
+// Tüm modeller için ayrı yönlendirmeler
+app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/orders', require('./routes/orderRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

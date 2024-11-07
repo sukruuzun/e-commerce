@@ -10,7 +10,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'http://localhost:5000/api',
       },
     ],
     components: {
@@ -89,9 +89,14 @@ const swaggerOptions = {
             username: { type: 'string', description: 'Kullanıcı adı' },
             email: { type: 'string', description: 'Kullanıcı email adresi' },
             password: { type: 'string', description: 'Kullanıcı şifresi' },
+            userType: { 
+              type: 'string', 
+              enum: ['customer', 'seller'], 
+              description: 'Kullanıcı tipi (customer veya seller)' 
+            },
             createdAt: { type: 'string', format: 'date-time', description: 'Oluşturulma tarihi' },
           },
-          required: ['username', 'email', 'password'],
+          required: ['name', 'email', 'password', 'userType'],
         },
       },
     },
