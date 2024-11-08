@@ -14,6 +14,13 @@ const swaggerOptions = {
       },
     ],
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
       schemas: {
         Address: {
           type: 'object',
@@ -89,17 +96,22 @@ const swaggerOptions = {
             username: { type: 'string', description: 'Kullanıcı adı' },
             email: { type: 'string', description: 'Kullanıcı email adresi' },
             password: { type: 'string', description: 'Kullanıcı şifresi' },
-            userType: { 
-              type: 'string', 
-              enum: ['customer', 'seller'], 
-              description: 'Kullanıcı tipi (customer veya seller)' 
+            userType: {
+              type: 'string',
+              enum: ['customer', 'seller'],
+              description: 'Kullanıcı tipi (customer veya seller)',
             },
             createdAt: { type: 'string', format: 'date-time', description: 'Oluşturulma tarihi' },
           },
-          required: ['name', 'email', 'password', 'userType'],
+          required: ['username', 'email', 'password', 'userType'],
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ['./routes/*.js'],
 };

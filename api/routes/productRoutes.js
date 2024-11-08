@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
+const { protect, authorize } = require("../middleware/authMiddleware");
 
 /**
  * @swagger
@@ -51,6 +52,8 @@ router.get("/:id", productController.getProductById);
  *   post:
  *     summary: Yeni bir ürün oluştur
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -60,14 +63,10 @@ router.get("/:id", productController.getProductById);
  *     responses:
  *       201:
  *         description: Ürün başarıyla oluşturuldu
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Product'
- *       400:
- *         description: Geçersiz girdi
+ *       401:
+ *         description: Yetkisiz
  */
-router.post("/", productController.createProduct);
+router.post("/", protect, authorize("seller"), productController.createProduct);
 
 /**
  * @swagger
@@ -100,7 +99,7 @@ router.post("/", productController.createProduct);
  *       400:
  *         description: Geçersiz girdi
  */
-router.put("/:id", productController.updateProduct);
+router.put("/:id", protect, authorize("seller"), productController.updateProduct);
 
 /**
  * @swagger
@@ -121,6 +120,6 @@ router.put("/:id", productController.updateProduct);
  *       404:
  *         description: Ürün bulunamadı
  */
-router.delete("/:id", productController.deleteProduct);
+router.delete("/:id", protect, authorize("seller"), productController.deleteProduct);
 
 module.exports = router;
